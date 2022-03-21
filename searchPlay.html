@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src='https://kit.fontawesome.com/bdfe5144d7.js' crossorigin='anonymous'></script>
+    <link rel="stylesheet" href="searchPlay.css">
+    <style>
+        /* img{
+            height: 100%;
+            width: 100%;
+        } */
+        .ad{
+            height: 300px;
+        }
+        .video{
+            white-space: nowrap;
+            overflow: hidden;
+            
+        }
+        .subscribe_btn{
+            background-color: red;
+            color:white;
+        }
+        .displayContent{
+            /* border: 1px solid; */
+            height: fit-content;
+        }
+        .searchVideos{
+            /* border: 1px solid blue; */
+            width: fit-content;
+            width: 100%;
+        }
+        
+    </style>
+</head>
+<body>
+    <!-- main display -->
+    <div class="contianer">
+        <!-- left side pannel buttons -->
+        <div class="box box1">
+            <p> <i class="fa fa-bars"></i> <i class="fa fa-youtube"></i> <span id="mainLogo">YouTube</span><sup>IN</sup> </p> 
+            <button> <i class="fas fa-home"></i> Home</button>
+            <button> <i class="far fa-compass"></i> Explore</button>
+            <button> <i class="fas fa-photo-video"></i>Subscriptions</button>
+            <button> <i class="far fa-play-circle"></i> Library</button>
+            <button> <i class="fas fa-history"></i> History</button>
+            <button> <i class="fas fa-play"></i> Your Videos</button>
+            <button> <i class="far fa-clock"></i> Watch later</button>
+            <button> <i class="far fa-thumbs-up"></i>Liked videos</button>
+            <button> <i class="fab fa-youtube-square"></i>YouTube Premium</button>
+            <button> <i class="fas fa-film"></i> Movies</button>
+            <button> <i class="fas fa-podcast"></i> Live</button>
+            <button>Fashion & Beauty</button>
+            <button>Learning</button>
+            <button>Sports</button> 
+            <button>Setting</button>
+            <button>Report Hidtory</button>
+            <button>Help <i class="far fa-question-circle"></i></button>
+        </div>
+        <!-- content display -->
+        <div class="box box2">
+            <!-- search bar taking input from the users -->
+            <div class="seachBar">
+                <input type="text" id="search" placeholder="Search">
+                <button id="searchBtn" onclick="searchVideo()"> <i class="fas fa-search"></i></button>
+                <div class="seachBarIcons"><i class="fas fa-microphone"></i></div> 
+                
+                 <i class="fa fa-video vicon"></i>
+                 <i class="fa fa-chess-board"></i>
+                 <i class="far fa-bell"><sup class="notification">9+</sup></i>
+                 <div class="seachBarIcons"><i class="fa fa-user"></i></div>
+            </div>
+            <!-- display the trendin word-->
+            <div class="trendinWords">
+                <div class="trd al">All</div>
+                <div class="trd">CSS</div>
+                <div class="trd">Gaana</div>
+                <div class="trd">T-Series</div>
+                <div class="trd">Akshay Kumar</div>
+                <div class="trd">Computer</div>
+                <div class="trd">Mixes</div>
+                <div class="trd">Python</div>
+                <div class="trd">Ertugrul</div>
+                <div class="trd">JavaScript</div>
+                <div class="trd">Indian Army</div>
+            </div>
+            <!-- as on the main display -->
+            <!-- <div class="ad"><i class="fa fa-youtube"></i> <span id="mainLogo">YouTube Premium</span><i class="fas fa-times"></i>
+                
+                <p class="adDes">Buy 1 month & 3 month prepaid plans with UPI</p>
+                <button class="adBtn">GET IT NOW</button>
+            </div> -->
+            <!-- for display the content from youtube -->
+            <div class="displayContent">
+                <!-- <i class="fa fa-sliders"> Filter</i>
+                <div class="searchVideos">
+                    <div class="thumnails"></div>
+                    <div class="videoDetails"></div>
+                </div> -->
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    var mykey = "AIzaSyDX1TlSY5W3HHx07JontYrJuR0JMo2sUCE"
+    async function searchVideo(){
+        try {
+ 
+            //var api = "AIzaSyBpWeZLWzX1MPAejsHNeT8B7kfEVyaXxwE";
+            let inp = document.getElementById("search").value;
+            console.log(inp);
+// var url = `https://youtube.googleapis.com/youtube/v3/channelBanners/insert?channelId=UCIaFHVjMDJviuPr06WC3YA&key=${mykey}`
+            // https://www.googleapis.com/youtube/v3/videos?part=contentDetails&chart=mostPopular&regionCode=IN&key=API_KEY
+            //  var url = `https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&type=video&maxResults=50&regionCode=IN&key=${mykey}`
+            var url  = `https://youtube.googleapis.com/youtube/v3/search?q=${inp}&key=${mykey}&maxResults=50&part=snippet`
+            // let res = await fetch(`https://youtube.googleapis.com/youtube/v3/search?q=${inp}&key=${mykey}&type=video`);
+            let res = await fetch(url);
+            
+            let data = await res.json();
+            displayData(data);
+            //console.log(data.items[1].snippet.thumbnails.high.url);
+            console.log(data.items[0].id.videoId)
+        }
+        catch(error){
+            console.error(error);
+        }
+    }
+    function displayData(data){
+
+        // <div class="displayContent">
+        //         <div class="searchVideos">
+        //             <div class="thumnails"></div>
+        //             <div class="videoDetails"></div>
+        //         </div> 
+        let displayContent = document.querySelector(".displayContent");
+        var it = document.createElement('i');
+        it.setAttribute('class','fa fa-sliders')
+        it.innerText=' Filter';
+        displayContent.append(it);
+
+        
+        for(let i=0;i<data.items.length;i++){
+            let contentDiv = document.createElement("div");
+            contentDiv.setAttribute("class","searchVideos");
+            displayContent.append(contentDiv);
+
+            let thumbnails = document.createElement("div");
+            thumbnails.setAttribute("class","thumnails");
+            contentDiv.append(thumbnails);
+
+            let contentImg = document.createElement("img");
+            contentImg.setAttribute("src",data.items[i].snippet.thumbnails.high.url);
+            contentImg.addEventListener("click",function (){
+                localStorage.setItem("videoPlay",JSON.stringify(data.items[i].id.videoId));
+                window.location.href='videoPlay.html';
+                // console.error()
+                // console.log(data.items[i].id.videoId);
+            });
+            thumbnails.append(contentImg);
+
+            let videoDetails = document.createElement("div");
+            videoDetails.setAttribute("class","videoDetails");
+            contentDiv.append(videoDetails);
+            let contentTitle = document.createElement('h2');
+            contentTitle.innerText=data.items[i].snippet.title;
+            videoDetails.append(contentTitle)
+
+            let contentTime = document.createElement('p');
+            contentTime.style.color='grey'
+            contentTime.innerText="657K Views "+` `+ data.items[i].snippet.publishTime;
+            videoDetails.append(contentTime)
+
+            
+
+
+
+            let channelName = document.createElement('h1');
+            channelName.innerText=data.items[i].snippet.channelTitle;
+            channelName.setAttribute('class','channelName');
+            videoDetails.append(channelName)
+
+            // channelName.addEventListener('click',async function(){
+            //     var u = `https://youtube.googleapis.com/youtube/v3/channelBanners/insert?channelId=${data.items[i].snippet.channelId}&key=${mykey}`;
+            // let ress = await fetch(u);
+            
+            // let data1 = await ress.json();
+            // console.log(data1)
+            // })
+
+            let videoDescription = document.createElement('p');
+            videoDescription.setAttribute('class','videoDescription')
+            videoDescription.innerText=data.items[i].snippet.description;
+            videoDetails.append(videoDescription);
+
+            
+            //     channelName.style.color="grey"
+        //     channelName.style.display='inline'
+        //     channelName.style.marginLeft='5px'
+        //     channelName.style.marginRight='8px'
+
+        //     let sbc = document.createElement('span');
+        //     sbc.setAttribute("class","subscribe_btn");
+        //     sbc.innerText="Subscribe";
+        //     // sbc.style.backgroundColor="red"
+        //     // sbc.style.border="none"
+        //     // sbc.style.height="50px"
+        //     // sbc.style.color='white'
+
+            // contentDiv.append(contentImg,contentTitle ,channelName,sbc)
+
+
+        }
+
+        
+    }
+
+</script>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src='https://kit.fontawesome.com/bdfe5144d7.js' crossorigin='anonymous'></script>
+    <link rel="stylesheet" href="videoPlay.css">
+</head>
+<body>
+    <!-- main display -->
+    <div class="contianer">
+        <div class="box box2">
+            <div class="seachBar">
+                <i class="fa fa-bars"></i> <i class="fa fa-youtube"></i> <span id="mainLogo">YouTube</span><sup>IN</sup> 
+                <input type="text" id="search" placeholder="Search">
+                <button id="searchBtn" onclick="searchVideo()"> <i class="fas fa-search"></i></button>
+                <div class="seachBarIcons"><i class="fas fa-microphone"></i></div> 
+                
+                 <i class="fa fa-video vicon"></i>
+                 <i class="fa fa-chess-board"></i>
+                 <i class="far fa-bell"><sup class="notification">9+</sup></i>
+                 <div class="seachBarIcons"><i class="fa fa-user"></i></div>
+           
+            </div>
+            <!-- display the trendin word-->
+            <div class="content">
+                <div class="play">
+                    <iframe id="videoFrame" src="https://www.youtube.com/embed/2mLcebzCxw4&autoplay=1" allow="autoplay" title="YouTube video player" frameborder="0" allow="autoplay"; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <h3 id="videoPlayTitle">video title goes here for playing for the current value</h3>
+                </div>
+                <div class="sugg">
+                    <div class="trendinWords">
+                        <div class="trd al">All</div>
+                        <div class="trd">CSS</div>
+                        <div class="trd">Gaana</div>
+                        <div class="trd">T-Series</div>
+                        <div class="trd">Indian Army</div>
+                    </div>
+                    <div class="videoSugg">
+                        <div class="vvv"></div>
+                        <div class="vvv"></div>
+                        <div class="vvv"></div>
+                        <div class="vvv"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    var vidoePlayData = JSON.parse(localStorage.getItem('videoPlay'))
+   var videoFrame = document.getElementById('videoFrame');
+   console.log(vidoePlayData)
+   
+   videoFrame.src=`https://www.youtube.com/embed/${vidoePlayData}?autoplay=1`//`https://www.youtube.com/embed/${vidoePlayData.id}?autoplay=1`
+    
+    async function searchVideo(){
+        try {
+            var api = "AIzaSyC9oX9p6zDdjflyhlMuS1d9STMXdtzSrho"
+            //var api = "AIzaSyBpWeZLWzX1MPAejsHNeT8B7kfEVyaXxwE";
+            let inp = document.getElementById("search").value;
+            //var url = `https://youtube.googleapis.com/youtube/v3/search?q${inp}key=${api}&tyoe=video`
+            let res = await fetch(`https://youtube.googleapis.com/youtube/v3/search?q=${inp}&key=${api}`);
+            let data = await res.json();
+            console.log(data.items[0].id.videoId);
+            console.log(data.items[1].id.videoId);
+            // var vvv = document.querySelector("#vvv");
+            // vvv.src= `https://www.youtube.com/embed/${data.items[1]}`
+        }
+        catch{
+            console.log("error");
+        }
+        // function sho(data){
+        //     var body = document.querySelector("body");
+        //     for(i=0;i<data.length;i++){
+        //         var div = document.createElement("div");
+        //         body.append(div)
+
+        //     }
+        // }
+    }
+</script>
